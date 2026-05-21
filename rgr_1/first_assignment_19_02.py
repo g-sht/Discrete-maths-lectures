@@ -1,4 +1,6 @@
 import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class BooleanMatrix:
     def __init__(self, np_matrix):
@@ -53,6 +55,22 @@ class BooleanMatrix:
 
         return BooleanMatrix(out)
 
+    #отрисовка графа по матрице смежности
+    def draw(self):
+        graph = nx.DiGraph(directed=True)
+        m, n = self.matrix.shape
+
+        graph.add_nodes_from(range(1, m + 1))
+
+        for i in range(m):
+            for j in range(n):
+                if self.matrix[i, j] == 1:
+                    graph.add_edge(i + 1, j + 1)
+
+        nx.draw(graph, with_labels=True, node_color='lightblue')
+        plt.show()
+
+
 a = BooleanMatrix(np.matrix('1, 0; 0, 1'))
 b = BooleanMatrix(np.matrix('0, 1; 1, 0'))
 d = a * b
@@ -70,3 +88,5 @@ print(c.matrix)
 
 e = a - b
 print(e.matrix)
+
+e.draw()
